@@ -1,7 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getDashboardData } from "@/lib/graph-api-endpoint";
 import { useQuery } from "@tanstack/react-query";
-import RevenueLineChart from "./revenue-line-chart/revenue-line-chart";
+import RevenueLineChart from "../revenue-line-chart/revenue-line-chart";
+import InvoiceStatusPieChart from "../invoice-status-pie-chart";
+import TopClientBarChart from "../top-client-bar-chart";
 
 export const ChartContainer = () => {
     const { data, isLoading, error } = useQuery({
@@ -21,12 +23,8 @@ export const ChartContainer = () => {
             </div>
         );
     }
-
-    console.log(data);
     return (
-        <div className="w-full h-full p-4 flex flex-col items-center justify-start">
-            <h1>Chart Container</h1>
-            <p>This is where the chart will be displayed.</p>
+        <div className="w-full h-full p-4 flex flex-col items-center justify-start *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs">
             <Card className="w-full">
                 <CardHeader>
                     <CardTitle>Monthly Revenue</CardTitle>
@@ -35,10 +33,13 @@ export const ChartContainer = () => {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <RevenueLineChart config={data.monthlyRevenue} />
-                    <pre className="whitespace-pre-wrap">{JSON.stringify(data, null, 2)}</pre>
+                    <RevenueLineChart chartData={data.monthlyRevenue} />
                 </CardContent>
             </Card>
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 md:grid-rows-1 md:gap-x-1.5 mt-4">
+                <InvoiceStatusPieChart statusDistribution={data.statusDistribution}/>
+                <TopClientBarChart topClientsChartData={data.topClients.slice(0, 5)} />
+            </div>
         </div>
     );
 }

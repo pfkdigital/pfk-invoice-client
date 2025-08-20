@@ -4,7 +4,7 @@ interface ContentContainerProps {
 
 const ContentContainer = ({ children }: ContentContainerProps) => {
     return (
-        <div className="w-full h-full p-4">
+        <div className="max-w-[1500px] w-full h-full p-4">
             {children}
         </div>
     );
