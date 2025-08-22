@@ -6,6 +6,7 @@ import InvoiceStatusPieChart from "../invoice-status-pie-chart";
 import TopClientBarChart from "../top-client-bar-chart";
 
 export const ChartContainer = () => {
+
     const { data, isLoading, error } = useQuery({
         queryKey: ['dashboardGraphData'],
         queryFn: getDashboardData,
@@ -37,8 +38,8 @@ export const ChartContainer = () => {
                 </CardContent>
             </Card>
             <div className="w-full grid grid-cols-1 md:grid-cols-2 md:grid-rows-1 md:gap-x-1.5 mt-4">
-                <InvoiceStatusPieChart statusDistribution={data.statusDistribution}/>
                 <TopClientBarChart topClientsChartData={data.topClients.slice(0, 5)} />
+                <InvoiceStatusPieChart statusDistribution={data.statusDistribution} />
             </div>
         </div>
     );

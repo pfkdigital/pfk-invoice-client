@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
 import { PieChart, Pie, Cell } from "recharts";
@@ -43,16 +44,14 @@ const chartConfig = {
 const InvoiceStatusPieChart = ({ statusDistribution, currency = "GBP" }: InvoiceStatusPieChartProps) => {
     const [metric, setMetric] = React.useState<'count' | 'amount'>("count")
 
-    const raw = Array.isArray(statusDistribution) ? statusDistribution : []
-
     const data: PieChartDataPoint[] = React.useMemo(() => {
-        return raw.map(item => ({
+        return statusDistribution.map(item => ({
             id: item.status,
             value: metric === 'count' ? item.count : item.total_amount,
             count: item.count,
             amount: item.total_amount
         }))
-    }, [raw, metric])
+    }, [statusDistribution, metric])
 
     const totalValue = data.reduce((a, c) => a + c.value, 0)
     const hasData = data.length > 0 && totalValue > 0
@@ -118,8 +117,7 @@ const InvoiceStatusPieChart = ({ statusDistribution, currency = "GBP" }: Invoice
                                 dataKey="value"
                                 nameKey="id"
                                 innerRadius={60}
-                                paddingAngle={2}
-                                strokeWidth={4}
+                                strokeWidth={10}
                                 isAnimationActive
                             >
                                 {hasData && data.map(d => (
