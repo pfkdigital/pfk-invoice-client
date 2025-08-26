@@ -11,7 +11,7 @@ interface ApiStatusDistributionItem {
 }
 
 interface PieChartDataPoint {
-    id: string 
+    id: string
     value: number
     count: number
     amount: number
@@ -23,9 +23,6 @@ interface InvoiceStatusPieChartProps {
 }
 
 const chartConfig = {
-    status: {
-        label: "Invoice Status",
-    },
     PAID: {
         label: "Paid",
         color: "var(--chart-3)",
@@ -93,22 +90,22 @@ const InvoiceStatusPieChart = ({ statusDistribution, currency = "GBP" }: Invoice
                     >
                         <PieChart>
                             <ChartTooltip
-                                cursor={false}
                                 content={
                                     <ChartTooltipContent
-                                        hideLabel
-                                        nameKey="id"
-                                        formatter={(value: any, _name: any, item: any) => {
-                                            const p = item?.payload as PieChartDataPoint | undefined
-                                            if (!p) return value
-                                            const pct = totalValue ? (p.value / totalValue) * 100 : 0
+                                        className="w-[200px]"
+                                        nameKey="revenue"
+                                        formatter={(value, payload, ...args) => {
+                                            const numericValue = value as number;
                                             return (
-                                                <div className="flex w-full flex-col gap-0.5">
-                                                    <span className="font-medium">{chartConfig[p.id as keyof typeof chartConfig]?.label || p.id}</span>
-                                                    <span className="text-muted-foreground">{metric === 'count' ? `${p.count.toLocaleString()} invoices` : formatCurrency(p.amount, currency)}</span>
-                                                    <span className="text-muted-foreground">{pct.toFixed(1)}%</span>
+                                                <div className="flex items-center gap-2">
+                                                    <span
+                                                        className={`inline-block w-3 h-3 rounded-2 bg-[${chartConfig[payload as keyof typeof chartConfig]?.color ?? 'var(--chart-1)'}]`}
+                                                    ></span>
+                                                    <span>
+                                                        {metric === 'count' ? `${numericValue.toLocaleString()} Invoices` : formatCurrency(numericValue, currency)}
+                                                    </span>
                                                 </div>
-                                            )
+                                            );
                                         }}
                                     />
                                 }
@@ -118,7 +115,6 @@ const InvoiceStatusPieChart = ({ statusDistribution, currency = "GBP" }: Invoice
                                 dataKey="value"
                                 nameKey="id"
                                 innerRadius={60}
-                                paddingAngle={2}
                                 strokeWidth={4}
                                 isAnimationActive
                             >

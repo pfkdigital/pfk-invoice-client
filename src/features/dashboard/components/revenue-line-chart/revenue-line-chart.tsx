@@ -1,7 +1,4 @@
-"use client"
-
-import * as React from "react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
 import {
   Card,
@@ -17,34 +14,20 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { useCallback } from "react"
-import { format } from "path"
 import { formatCurrency } from "@/lib/currency-formatter"
+import { RevenueDataPoint } from "@/types/graph.types"
 
 interface RevenueLineChartProps {
-  chartData: { date: string; revenue: number }[];
+  chartData: RevenueDataPoint[];
 }
 
-export const description = "An interactive line chart"
-
-const chartData = [
-  { date: "2024-04-01", revenue: 1234 },
-  { date: "2024-04-02", revenue: 97 },
-  { date: "2024-04-03", revenue: 167 },
-  { date: "2024-04-04", revenue: 242 },
-  { date: "2024-04-05", revenue: 373 },
-]
-
 const chartConfig = {
-  views: {
-    label: "Page Views",
+  date: {
+    label: "Invoice Date",
   },
-  desktop: {
-    label: "Desktop",
+  revenue: {
+    label: "Revenue",
     color: "var(--chart-1)",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "var(--chart-2)",
   },
 } satisfies ChartConfig
 
@@ -60,16 +43,16 @@ export default function RevenueLine({ chartData }: RevenueLineChartProps) {
           <CardDescription> Showing total revenue for the last 12 months </CardDescription>
         </div>
         <div className="flex">
-              <button
-                className="data-[active=true]:bg-muted/50 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-t-0 sm:border-l sm:px-8 sm:py-6"
-              >
-                <span className="text-muted-foreground text-xs">
-                  Total Revenue
-                </span>
-                <span className="text-lg leading-none font-bold sm:text-3xl">
-                  {formatCurrency(total())}
-                </span>
-              </button>
+          <button
+            className="data-[active=true]:bg-muted/50 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-t-0 sm:border-l sm:px-8 sm:py-6"
+          >
+            <span className="text-muted-foreground text-xs">
+              Total Revenue
+            </span>
+            <span className="text-lg leading-none font-bold sm:text-3xl">
+              {formatCurrency(total())}
+            </span>
+          </button>
         </div>
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
@@ -85,11 +68,10 @@ export default function RevenueLine({ chartData }: RevenueLineChartProps) {
               right: 12,
             }}
           >
-            <CartesianGrid vertical={false} />
+            <CartesianGrid vertical={true} />
             <XAxis
               dataKey="date"
               tickLine={false}
-              axisLine={false}
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
@@ -101,11 +83,16 @@ export default function RevenueLine({ chartData }: RevenueLineChartProps) {
                 })
               }}
             />
+            <YAxis
+              dataKey={"revenue"}
+              tickLine={false}
+              tickFormatter={(value) => formatCurrency(value, "GBP")}
+            />
             <ChartTooltip
               content={
                 <ChartTooltipContent
-                  className="w-[150px]"
-                  nameKey="Revenue"
+                  className="w-[200px]"
+                  nameKey="revenue"
                   labelFormatter={(value) => {
                     const [year, month] = value.split('-')
                     const date = new Date(parseInt(year), parseInt(month) - 1)
@@ -113,6 +100,19 @@ export default function RevenueLine({ chartData }: RevenueLineChartProps) {
                       month: "long",
                       year: "numeric",
                     })
+                  }}
+                  formatter={(value) => {
+                    const numericValue = value as number;
+                    return (
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="inline-block w-3 h-3 rounded-2 bg-[var(--chart-3)]"
+                        ></span>
+                        <span>
+                          {formatCurrency(numericValue, "GBP")}
+                        </span>
+                      </div>
+                    );
                   }}
                 />
               }
@@ -122,7 +122,7 @@ export default function RevenueLine({ chartData }: RevenueLineChartProps) {
               type="monotone"
               stroke={`var(--chart-3)`}
               strokeWidth={2}
-              dot={false}
+              dot={true}
             />
           </LineChart>
         </ChartContainer>

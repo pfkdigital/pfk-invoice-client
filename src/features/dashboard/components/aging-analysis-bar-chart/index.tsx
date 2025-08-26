@@ -1,65 +1,53 @@
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
-
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
-    ChartConfig,
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart"
-import { formatCurrency } from "@/lib/currency-formatter";
-import { TopClientsDataPoint } from "@/types/graph.types";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { ChartTooltip, ChartTooltipContent, ChartContainer } from "@/components/ui/chart"
+import { formatCurrency } from "@/lib/currency-formatter"
+import { AgingAnalysisDataPoint } from "@/types/graph.types"
+import { CartesianGrid, XAxis, YAxis, Bar, BarChart } from "recharts"
 
 const chartConfig = {
-    total_revenue: {
-        label: "Total Revenue",
+    total_amount: {
+        label: "Total Amount",
         color: "var(--chart-2)",
     },
-    invoice_count: {
+    count: {
         label: "Invoice Count",
         color: "var(--chart-1)",
     },
-} satisfies ChartConfig
-
-
-interface TopClientBarChartProps {
-    topClientsChartData: TopClientsDataPoint[]
 }
 
-const TopClientBarChart = ({ topClientsChartData }: TopClientBarChartProps) => {
+interface AgingAnalysisBarChartProps {
+    agingAnalysisChartData: AgingAnalysisDataPoint[]
+}
+
+const AgingAnalysisBarChart = ({ agingAnalysisChartData }: AgingAnalysisBarChartProps) => {
     return (
         <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs">
-            <Card className="w-full">
+            <Card className="w-full h-full">
                 <CardHeader>
-                    <CardTitle>Top 5 Clients</CardTitle>
-                    <CardDescription>The top 5 clients by total revenue and invoice count</CardDescription>
+                    <CardTitle>Aging Analysis</CardTitle>
+                    <CardDescription>This chart shows the distribution of invoices based on their age ranges, helping to identify overdue payments and manage cash flow effectively.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <ChartContainer config={chartConfig}>
-                        <BarChart accessibilityLayer data={topClientsChartData}>
+                        <BarChart accessibilityLayer data={agingAnalysisChartData}>
                             <CartesianGrid vertical={true} />
                             <XAxis
-                                dataKey="client_name"
+                                dataKey="age_range"
                                 tickLine={false}
-                                tickMargin={10}
+                                tickMargin={5}
                                 axisLine={true}
-
                             />
                             <YAxis
-                                dataKey={"total_revenue"}
-                                tickFormatter={(v) => formatCurrency(v)}
+                                dataKey={"total_amount"}
+                                tickLine={false}
+                                tickMargin={5}
+                                axisLine={true}
+                                tickFormatter={(value) => ` ${formatCurrency(value)}`}
                             />
                             <ChartTooltip
                                 content={
                                     <ChartTooltipContent
                                         className="w-[200px]"
-                                        nameKey="total_revenue"
                                         formatter={(value) => {
                                             const numericValue = value as number;
                                             return (
@@ -76,7 +64,7 @@ const TopClientBarChart = ({ topClientsChartData }: TopClientBarChartProps) => {
                                     />
                                 }
                             />
-                            <Bar dataKey="total_revenue" fill="var(--chart-3)" radius={4} barSize={95} />
+                            <Bar dataKey="total_amount" fill="var(--chart-3)" radius={4} barSize={75} />
                         </BarChart>
                     </ChartContainer>
                 </CardContent>
@@ -85,4 +73,5 @@ const TopClientBarChart = ({ topClientsChartData }: TopClientBarChartProps) => {
     )
 }
 
-export default TopClientBarChart;
+
+export default AgingAnalysisBarChart
