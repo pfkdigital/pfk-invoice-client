@@ -5,7 +5,7 @@ import avatar from "@/assets/shadcn.jpg";
 import { PlusIcon } from "lucide-react";
 import { IconCirclePlusFilled } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 const defaultUser = {
     name: "Nuh Ali",
@@ -14,6 +14,7 @@ const defaultUser = {
 }
 
 const AppSideBar = () => {
+    let location = useLocation().pathname
     return (
         <Sidebar collapsible="icon">
             <SidebarContent>
@@ -41,7 +42,7 @@ const AppSideBar = () => {
                         <SidebarMenu>
                             {sidebarItems.map((item) => (
                                 <Link to={item.href} key={item.label}>
-                                    <SidebarMenuItem key={item.label}>
+                                    <SidebarMenuItem key={item.label} className={location === item.href ? "bg-accent text-accent-foreground hover:bg-accent/80 hover:text-accent-foreground active:bg-accent/90 active:text-accent-foreground" : ""}>
                                         <SidebarMenuButton tooltip={item.label}>
                                             {item.icon && <item.icon />}
                                             <span>{item.label}</span>

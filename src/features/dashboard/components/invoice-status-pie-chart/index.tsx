@@ -94,12 +94,12 @@ const InvoiceStatusPieChart = ({ statusDistribution, currency = "GBP" }: Invoice
                                     <ChartTooltipContent
                                         className="w-[200px]"
                                         nameKey="revenue"
-                                        formatter={(value, payload, ...args) => {
+                                        formatter={(value, payload) => {
                                             const numericValue = value as number;
                                             return (
                                                 <div className="flex items-center gap-2">
                                                     <span
-                                                        className={`inline-block w-3 h-3 rounded-2 bg-[${chartConfig[payload as keyof typeof chartConfig]?.color ?? 'var(--chart-1)'}]`}
+                                                        className={`inline-block w-3 h-3 rounded-2 bg-[${chartConfig[payload as keyof typeof chartConfig]?.color}]`}
                                                     ></span>
                                                     <span>
                                                         {metric === 'count' ? `${numericValue.toLocaleString()} Invoices` : formatCurrency(numericValue, currency)}
