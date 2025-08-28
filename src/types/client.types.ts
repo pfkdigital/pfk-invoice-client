@@ -1,28 +1,27 @@
 import type { InvoiceDto } from "./invoice.types";
 
+export interface ClientAddress {
+  id: string;
+  street: string;
+  city: string;
+  country: string;
+  postalCode: string;
+  clientId: string;
+}
+
+export type PartialClientAddress = Partial<ClientAddress>;
 export interface CreateClientDto {
   clientName: string;
   clientEmail: string;
   clientPhone: string;
-  clientAddress: {
-    street: string;
-    city: string;
-    country: string;
-    postalCode: string;
-  };
+  clientAddress: PartialClientAddress;
 }
 
 export interface UpdateClientDto {
   clientName: string;
   clientEmail: string;
   clientPhone: string;
-  clientAddress: {
-    id: string;
-    street: string;
-    city: string;
-    country: string;
-    postalCode: string;
-  };
+  clientAddress: PartialClientAddress;
 }
 
 export interface ClientDto {
@@ -30,12 +29,13 @@ export interface ClientDto {
   clientName: string;
   clientEmail: string;
   clientPhone: string;
-  clientAddress: {
-    id: string;
-    street: string;
-    city: string;
-    country: string;
-    postalCode: string;
-  };
+  clientAddress: PartialClientAddress;
   invoices?: InvoiceDto[];
+}
+export interface ClientRow {
+  id: string;
+  clientName: string;
+  clientEmail: string;
+  clientPhone: string;
+  clientAddress: ClientAddress[]
 }
