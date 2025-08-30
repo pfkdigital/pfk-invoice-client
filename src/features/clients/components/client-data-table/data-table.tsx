@@ -13,7 +13,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Link } from "react-router"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -58,15 +57,11 @@ export function DataTable<TData, TValue>({
                     <TableBody className="divide-y divide-border">
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
-                                <Link
-                                    to={`/clients/${row.original.id}`}
-                                    key={row.id}
-                                    className="contents"
-                                >
                                     <TableRow
+                                        key={row.id}
                                         data-state={row.getIsSelected() && "selected"}
                                         className={
-                                            "odd:bg-card even:bg-muted/40 hover:bg-primary/10 transition-colors " +
+                                            "odd:bg-card even:bg-muted/40 hover:bg-primary/10 transition-colors" +
                                             "data-[state=selected]:bg-primary/20 data-[state=selected]:border-l-4 data-[state=selected]:border-primary cursor-pointer"
                                         }
                                     >
@@ -84,7 +79,6 @@ export function DataTable<TData, TValue>({
                                             </TableCell>
                                         ))}
                                     </TableRow>
-                                </Link>
                             ))
                         ) : (
                             <TableRow>
