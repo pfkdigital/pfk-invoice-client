@@ -1,4 +1,5 @@
 import { CLIENTS_ENDPOINT } from "@/constants/endpoints";
+import { UpdateClientDto } from "@/schemas/client.schema";
 import type { ClientDto, CreateClientDto } from "@/types/client.types";
 
 export const createClient = async (
@@ -43,8 +44,8 @@ export const getClientById = async (id: string): Promise<ClientDto> => {
 
 export const updateClient = async (
   id: string,
-  clientData: Partial<CreateClientDto>
-): Promise<ClientDto | null> => {
+  clientData: UpdateClientDto
+): Promise<UpdateClientDto | null> => {
   const response = await fetch(`${CLIENTS_ENDPOINT}/${id}`, {
     method: "PUT",
     headers: {

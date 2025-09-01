@@ -37,5 +37,5 @@ export interface ClientRow {
   clientName: string;
   clientEmail: string;
   clientPhone: string;
-  clientAddress: ClientAddress[]
+  clientAddress: ClientAddress
 }

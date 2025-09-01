@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { CreateClientSchema, CreateClientDto } from "@/schemas/client.schema";
 import { createClient } from "@/lib/client-api-client";
+import { toast } from "sonner"
 
 const AddClientDialog: React.FC = () => {
     const [open, setOpen] = useState(false);
@@ -36,8 +37,10 @@ const AddClientDialog: React.FC = () => {
             client.invalidateQueries({ queryKey: ["clients"] });
             setOpen(false);
             form.reset();
+            toast(`Client entry for ${values.clientName} has been created.`);
         } catch (error) {
             console.error("Error creating client:", error);
+            toast.error("There was an error creating the client. Please try again.");
         }
     };
 

@@ -6,7 +6,7 @@ import type {
 } from "@/types/invoice.types";
 
 export const getInvoices = async (
-  page: string,
+  page: number,
   limit: number,
   search: string,
   sort: string

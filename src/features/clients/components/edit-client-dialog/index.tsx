@@ -8,9 +8,10 @@ import { Input } from "@/components/ui/input";
 import { IconEdit } from "@tabler/icons-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { CreateClientDto, UpdateClientSchema, UpdateClientDto } from "@/schemas/client.schema";
-import { createClient, updateClient } from "@/lib/client-api-client";
+import { UpdateClientSchema, UpdateClientDto } from "@/schemas/client.schema";
+import { updateClient } from "@/lib/client-api-client";
 import { ClientRow } from "@/types/client.types";
+import { toast } from "sonner";
 
 interface EditClientDialogProps {
     client: ClientRow;
@@ -25,10 +26,11 @@ const EditClientDialog: React.FC<EditClientDialogProps> = ({ client }) => {
             clientEmail: client.clientEmail,
             clientPhone: client.clientPhone,
             clientAddress: {
-                street: client.clientAddress[0].street,
-                city: client.clientAddress[0].city,
-                country: client.clientAddress[0].country,
-                postalCode: client.clientAddress[0].postalCode,
+                id: client.clientAddress.id,
+                street: client.clientAddress.street,
+                city: client.clientAddress.city,
+                country: client.clientAddress.country,
+                postalCode: client.clientAddress.postalCode,
             },
         },
     });
@@ -41,8 +43,10 @@ const EditClientDialog: React.FC<EditClientDialogProps> = ({ client }) => {
             queryClient.invalidateQueries({ queryKey: ["clients"] });
             setOpen(false);
             form.reset();
+            toast(`Client entry for ${values.clientName} has been updated.`);
         } catch (error) {
-            console.error("Error creating client:", error);
+            console.error("Error updating client:", error);
+            toast.error("There was an error updating the client. Please try again.");
         }
     };
 
@@ -156,7 +160,7 @@ const EditClientDialog: React.FC<EditClientDialogProps> = ({ client }) => {
                             )}
                         />
                         <DialogFooter>
-                            <Button type="submit">Create</Button>
+                            <Button type="submit">Edit</Button>
                         </DialogFooter>
                     </form>
                 </Form>

@@ -4,6 +4,7 @@ import { deleteClient } from "@/lib/client-api-client";
 import { IconTrash } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface DeleteClientDialogProps {
     clientId: string;
@@ -13,11 +14,16 @@ const DeleteClientDialog: React.FC<DeleteClientDialogProps> = ({ clientId }: Del
     const [open, setOpen] = useState(false)
     const client = useQueryClient();
 
-    const handleDeleteClient = () => {
-        deleteClient(clientId).then(() => {
+    const handleDeleteClient = async () => {
+        try {
+            await deleteClient(clientId);
             client.invalidateQueries({ queryKey: ['clients'] });
             setOpen(false);
-        })
+            toast(`Client has been deleted.`);
+        } catch (error) {
+            console.error("Error deleting client:", error);
+            toast.error("There was an error deleting the client. Please try again.");
+        }
     }
 
     return (

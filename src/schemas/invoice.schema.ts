@@ -1,39 +1,42 @@
-import z from 'zod';
+import z from "zod";
 
 export const CreateInvoiceDtoSchema = z.object({
   invoiceReference: z.string(),
   description: z.string(),
-  status: z.enum(['PENDING', 'PAID', 'OVERDUE']),
+  status: z.enum(["PENDING", "PAID", "OVERDUE"]),
   invoiceDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: 'Invalid date format',
+    message: "Invalid date format",
   }),
   dueDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: 'Invalid date format',
+    message: "Invalid date format",
   }),
-  userId: z.string(),
+  clientId: z.string(),
+  totalAmount: z.number().min(0),
   items: z.array(
-    z.object({
-      name: z.string(),
-      description: z.string(),
-      quantity: z.number().int().positive(),
-      unitPrice: z.number().positive(),
-    }),
+    z
+      .object({
+        name: z.string(),
+        description: z.string(),
+        quantity: z.number().int().positive(),
+        unitPrice: z.number().positive(),
+      })
+      .optional()
   ),
 });
 
 export const UpdateInvoiceDtoSchema = z.object({
   invoiceReference: z.string().optional(),
-  status: z.enum(['PENDING', 'PAID', 'OVERDUE']).optional(),
+  status: z.enum(["PENDING", "PAID", "OVERDUE"]).optional(),
   invoiceDate: z
     .string()
     .refine((date) => !isNaN(Date.parse(date)), {
-      message: 'Invalid date format',
+      message: "Invalid date format",
     })
     .optional(),
   dueDate: z
     .string()
     .refine((date) => !isNaN(Date.parse(date)), {
-      message: 'Invalid date format',
+      message: "Invalid date format",
     })
     .optional(),
   items: z
@@ -44,7 +47,7 @@ export const UpdateInvoiceDtoSchema = z.object({
         description: z.string(),
         quantity: z.number().int().positive(),
         unitPrice: z.number().positive(),
-      }),
+      })
     )
     .optional(),
 });

@@ -4,6 +4,7 @@ import { SiteHeader } from "../site-header";
 import AppSideBar from "./app-side-bar";
 import ContentContainer from "../content-container";
 import { ClientPageProvider } from "@/context/client-page-context";
+import { Toaster } from "@/components/ui/sonner"
 
 const MainLayout = () => {
     return (
@@ -17,6 +18,7 @@ const MainLayout = () => {
                             <Outlet />
                         </ContentContainer>
                     </SidebarInset>
+                    <Toaster />
                 </>
             </ClientPageProvider>
         </SidebarProvider>

@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { ClientAddress, ClientRow } from "@/types/client.types";
 import { ColumnDef } from "@tanstack/react-table";
 import DeleteClientDialog from "../delete-client-dialog";
@@ -22,7 +20,7 @@ export const columns: ColumnDef<ClientRow>[] = [
         accessorKey: "clientAddress",
         header: "Client Address",
         cell: ({ row }) => {
-            const address = row.original.clientAddress[0] as ClientAddress
+            const address = row.original.clientAddress as ClientAddress
             return `${address.street}, ${address.country}`;
         },
     },

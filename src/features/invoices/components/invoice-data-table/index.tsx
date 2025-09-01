@@ -14,7 +14,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Link } from "react-router"
-import { ClientRow } from "@/types/client.types"
+import { InvoiceDto } from "@/types/invoice.types"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -32,7 +32,7 @@ export function DataTable<TData, TValue>({
     })
 
     return (
-        <div className="flex flex-col h-full w-full rounded-xl border border-border bg-gradient-to-t from-primary/5 to-card dark:bg-card shadow-xs">
+        <div className="flex flex-col h-full w-full rounded-xl border border-border bg-gradient-to-t from-primary/5 to-card dark:bg-card shadow-xs overflow-clip">
             <div className="overflow-auto flex-1">
                 <Table className="w-full min-w-full table-fixed">
                     <TableHeader className="sticky top-0 z-20 bg-gradient-to-r from-primary/10 via-card to-card ring-1 ring-border border-b border-border">
@@ -68,7 +68,7 @@ export function DataTable<TData, TValue>({
                                     }
                                 >
                                     {row.getVisibleCells().map((cell, idx) => idx === 0 ? (
-                                        <Link to={`/clients/${(row.original as ClientRow).id}`}>
+                                        <Link to={`/invoices/${(row.original as InvoiceDto).id}`}>
                                             <TableCell
                                                 key={cell.id}
                                                 className={

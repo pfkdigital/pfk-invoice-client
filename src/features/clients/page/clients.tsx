@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { Delete, FilterIcon, SearchIcon } from "lucide-react";
+import { FilterIcon, SearchIcon } from "lucide-react";
 import AddClientDialog from "../components/add-client-dialog";
-import DeleteClientDialog from "../components/delete-client-dialog";
 
 const ClientsPage = () => {
   const [search, setSearch] = useState("");
