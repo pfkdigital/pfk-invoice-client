@@ -6,6 +6,7 @@ import {
   PAYMENT_TRENDS,
   REVENUE_BY_CLIENT,
   STATUS_DISTRIBUTION,
+  STATUS_DISTRIBUTION_BY_CLIENT,
   TOP_CLIENTS,
 } from "@/constants/endpoints";
 
@@ -26,6 +27,16 @@ export const getStatusDistribution = async () => {
   }
   return response.json();
 };
+
+export const getStatusDistributionByClient = async (clientId: string) => {
+  const response = await fetch(STATUS_DISTRIBUTION_BY_CLIENT(clientId));
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch status distribution");
+  }
+  return response.json();
+};
+
 export const getTopClients = async () => {
   const response = await fetch(TOP_CLIENTS);
 

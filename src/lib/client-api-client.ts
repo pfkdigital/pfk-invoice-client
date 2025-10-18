@@ -20,11 +20,13 @@ export const createClient = async (
 };
 
 export const getClients = async (
+  page: number,
+  limit: number,
   search: string,
   sort: string
 ): Promise<ClientDto[] | []> => {
   const response = await fetch(
-    `${CLIENTS_ENDPOINT}?page=${search && `&search=${search}`}&sort=${sort}`
+    `${CLIENTS_ENDPOINT}?page=${page}&limit=${limit}&search=${search}&sort=${sort}`
   );
 
   if (!response.ok) {

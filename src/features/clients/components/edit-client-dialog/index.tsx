@@ -10,11 +10,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { UpdateClientSchema, UpdateClientDto } from "@/schemas/client.schema";
 import { updateClient } from "@/lib/client-api-client";
-import { ClientRow } from "@/types/client.types";
 import { toast } from "sonner";
+import { ClientDto } from "@/types/client.types";
 
 interface EditClientDialogProps {
-    client: ClientRow;
+    client: ClientDto;
 }
 
 const EditClientDialog: React.FC<EditClientDialogProps> = ({ client }) => {
@@ -40,7 +40,10 @@ const EditClientDialog: React.FC<EditClientDialogProps> = ({ client }) => {
     const onSubmit = async (values: UpdateClientDto) => {
         try {
             await updateClient(client.id, values);
-            queryClient.invalidateQueries({ queryKey: ["clients"] });
+            await Promise.all([
+                queryClient.invalidateQueries({ queryKey: ["clients"] }),
+                queryClient.invalidateQueries({ queryKey: ["client"] })
+            ])
             setOpen(false);
             form.reset();
             toast(`Client entry for ${values.clientName} has been updated.`);

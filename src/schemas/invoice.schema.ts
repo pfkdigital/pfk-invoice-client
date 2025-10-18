@@ -1,18 +1,17 @@
 import z from "zod";
 
 export const CreateInvoiceDtoSchema = z.object({
-  invoiceReference: z.string(),
-  description: z.string(),
+  description: z.string().optional(),
   status: z.enum(["PENDING", "PAID", "OVERDUE"]),
-  invoiceDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: "Invalid date format",
-  }),
-  dueDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: "Invalid date format",
-  }),
+  invoiceDate: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), "Invalid ISO date string"),
+  dueDate: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), "Invalid ISO date string"),
   clientId: z.string(),
   totalAmount: z.number().min(0),
-  items: z.array(
+  invoiceItems: z.array(
     z
       .object({
         name: z.string(),
@@ -27,19 +26,8 @@ export const CreateInvoiceDtoSchema = z.object({
 export const UpdateInvoiceDtoSchema = z.object({
   invoiceReference: z.string().optional(),
   status: z.enum(["PENDING", "PAID", "OVERDUE"]).optional(),
-  invoiceDate: z
-    .string()
-    .refine((date) => !isNaN(Date.parse(date)), {
-      message: "Invalid date format",
-    })
-    .optional(),
-  dueDate: z
-    .string()
-    .refine((date) => !isNaN(Date.parse(date)), {
-      message: "Invalid date format",
-    })
-    .optional(),
-  items: z
+  dueDate: z.date(),
+  invoiceItems: z
     .array(
       z.object({
         id: z.string().optional(),

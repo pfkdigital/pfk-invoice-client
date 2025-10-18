@@ -1,6 +1,6 @@
 import { INVOICES_ENDPOINT } from "@/constants/endpoints";
+import { CreateInvoiceDto } from "@/schemas/invoice.schema";
 import type {
-  CreateInvoiceDto,
   InvoiceDto,
   UpdateInvoiceDto,
 } from "@/types/invoice.types";

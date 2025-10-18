@@ -3,47 +3,61 @@ import { InvoiceDto } from "@/types/invoice.types";
 import InvoiceStatusBadge from "../invoice-status-badge";
 import { formatCurrency } from "@/lib/currency-formatter";
 import DeleteInvoiceDialog from "../delete-invoice-dialog";
-import EditInvoiceDialog from "../edit-invoice-dialog";
+import EditInvoiceSheet from "../edit-invoice-sheet";
+import { Button } from "@/components/ui/button";
+import { IconEye } from "@tabler/icons-react";
+import { Link } from "react-router";
 
 export const columns: ColumnDef<InvoiceDto>[] = [
-    {
-        accessorKey: "invoiceReference",
-        header: "Invoice Reference",
+  {
+    accessorKey: "invoiceReference",
+    header: "Invoice Reference",
+  },
+  {
+    accessorKey: "client.clientName",
+    header: "Client Name",
+  },
+  {
+    accessorKey: "dueDate",
+    header: "Due Date",
+  },
+  {
+    accessorKey: "totalAmount",
+    header: "Total Amount",
+    cell: ({ row }) => {
+      const total = row.original.totalAmount as number;
+      return (
+        <span className="font-bold text-white">{`${formatCurrency(
+          total,
+          "GBP"
+        )}`}</span>
+      );
     },
-    {
-        accessorKey: "client.clientName",
-        header: "Client Name",
+  },
+  {
+    accessorKey: "status",
+    header: "Invoice Status",
+    cell: ({ row }) => {
+      return <InvoiceStatusBadge status={row.original.status} />;
     },
-    {
-        accessorKey: "dueDate",
-        header: "Due Date",
+  },
+  {
+    header: () => <div className="text-end px-0">Actions</div>,
+    id: "actions",
+    cell: ({ row }) => {
+      const invoice = row.original;
+      return (
+        <div className="flex justify-end gap-2 px-0">
+          <EditInvoiceSheet invoice={invoice} />
+          <DeleteInvoiceDialog invoiceId={invoice.id} />
+          <Link to={`/invoices/${invoice.id}`}>
+            <Button variant="outline" size="sm">
+              <IconEye />
+              View
+            </Button>
+          </Link>
+        </div>
+      );
     },
-    {
-        accessorKey: "totalAmount",
-        header: "Total Amount",
-        cell: ({ row }) => {
-            const total = row.original.totalAmount as number;
-            return <span className="font-bold text-white">{`${formatCurrency(total, 'GBP')}`}</span>;
-        },
-    },
-    {
-        accessorKey: "status",
-        header: "Invoice Status",
-        cell: ({ row }) => {
-            return (
-                <InvoiceStatusBadge status={row.original.status} />
-            )
-        },
-    }
-    ,
-    {
-        header: () => <div className="text-end px-0">Actions</div>,
-        id: "actions",
-        cell: ({ row }) => (
-            <div className="flex justify-end gap-2 px-0">
-                <EditInvoiceDialog />
-                <DeleteInvoiceDialog invoiceId={row.original.id} />
-            </div>
-        ),
-    }
-]
+  },
+];

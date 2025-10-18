@@ -28,7 +28,7 @@ const DeleteClientDialog: React.FC<DeleteClientDialogProps> = ({ clientId }: Del
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger>
+            <DialogTrigger asChild>
                 <Button size="icon" variant="destructive" aria-label="Delete">
                     <IconTrash className="size-4" />
                 </Button>

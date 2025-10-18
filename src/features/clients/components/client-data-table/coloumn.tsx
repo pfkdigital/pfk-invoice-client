@@ -1,9 +1,12 @@
-import { ClientAddress, ClientRow } from "@/types/client.types";
+import { ClientAddress, ClientDto, ClientRow } from "@/types/client.types";
 import { ColumnDef } from "@tanstack/react-table";
 import DeleteClientDialog from "../delete-client-dialog";
 import EditClientDialog from "../edit-client-dialog";
+import { Button } from "@/components/ui/button";
+import { IconEye } from "@tabler/icons-react";
+import { Link } from "react-router";
 
-export const columns: ColumnDef<ClientRow>[] = [
+export const columns: ColumnDef<ClientDto>[] = [
     {
         accessorKey: "clientName",
         header: "Client Name",
@@ -25,14 +28,23 @@ export const columns: ColumnDef<ClientRow>[] = [
         },
     },
     {
-        header: () => <div className="text-end px-0">Actions</div>,
         id: "actions",
-        cell: ({ row }) => (
-            <div className="flex justify-end gap-2 px-0">
-                <EditClientDialog client={row.original} />
-                <DeleteClientDialog clientId={row.original.id} />
-            </div>
-        ),
+        header: () => <div className="text-end px-0">Actions</div>,
+        cell: ({ row }) => {
+            const client = row.original;
+            return (
+                <div className="flex justify-end gap-2 px-0">
+                    <Link to={`/clients/${client.id}`}>
+                        <Button variant="outline" size="sm">
+                            <IconEye className="size-4 mr-2" />
+                            View
+                        </Button>
+                    </Link>
+                    <EditClientDialog client={client} />
+                    <DeleteClientDialog clientId={client.id} />
+                </div>
+            );
+        },
     }
 
 ]

@@ -13,12 +13,10 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Link } from "react-router"
-import { InvoiceDto } from "@/types/invoice.types"
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
+interface DataTableProps<T, TValue> {
+    columns: ColumnDef<T, TValue>[]
+    data: T[]
 }
 
 export function DataTable<TData, TValue>({
@@ -68,7 +66,7 @@ export function DataTable<TData, TValue>({
                                     }
                                 >
                                     {row.getVisibleCells().map((cell, idx) => idx === 0 ? (
-                                        <Link to={`/invoices/${(row.original as InvoiceDto).id}`}>
+
                                             <TableCell
                                                 key={cell.id}
                                                 className={
@@ -77,7 +75,6 @@ export function DataTable<TData, TValue>({
                                             >
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </TableCell>
-                                        </Link>
                                     ) : (
                                         (
                                             <TableCell

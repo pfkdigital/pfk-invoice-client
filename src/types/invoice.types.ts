@@ -13,7 +13,6 @@ export interface InvoiceDto {
 }
 
 export interface CreateInvoiceDto {
-  invoiceReference: string;
   description: string;
   status: InvoiceStatus;
   invoiceDate: string;
