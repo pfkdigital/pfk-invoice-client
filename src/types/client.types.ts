@@ -39,3 +39,8 @@ export interface ClientRow {
   clientPhone: string;
   clientAddress: ClientAddress
 }
+
+export interface ClientNamesDto {
+  id: string;
+  clientName: string;
+}

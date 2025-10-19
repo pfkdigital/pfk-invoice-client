@@ -1,3 +1,4 @@
+import { InvoiceStatus } from "@/types/invoice.types";
 import z from "zod";
 
 export const CreateInvoiceDtoSchema = z.object({
@@ -24,9 +25,11 @@ export const CreateInvoiceDtoSchema = z.object({
 });
 
 export const UpdateInvoiceDtoSchema = z.object({
-  invoiceReference: z.string().optional(),
-  status: z.enum(["PENDING", "PAID", "OVERDUE"]).optional(),
-  dueDate: z.date(),
+  clientId: z.string(),
+  description: z.string(),
+  status: z.enum(InvoiceStatus),
+  dueDate: z.string(),
+  totalAmount: z.number().min(0),
   invoiceItems: z
     .array(
       z.object({

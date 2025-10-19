@@ -73,5 +73,7 @@ export const deleteInvoice = async (id: string): Promise<void> => {
   if (!response.ok) {
     throw new Error("Failed to delete invoice");
   }
-  return response.json();
+  
+  // Don't try to parse JSON for DELETE operations
+  // DELETE typically returns empty body or minimal response
 };

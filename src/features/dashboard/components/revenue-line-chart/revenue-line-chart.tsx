@@ -32,7 +32,6 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export default function RevenueLine({ chartData }: RevenueLineChartProps) {
-
   const total = useCallback(() => chartData.reduce((acc, curr) => acc + curr.revenue, 0), [chartData])
 
   return (
@@ -70,7 +69,7 @@ export default function RevenueLine({ chartData }: RevenueLineChartProps) {
           >
             <CartesianGrid vertical={true} />
             <XAxis
-              dataKey="date"
+              dataKey="month_year"
               tickLine={false}
               tickMargin={8}
               minTickGap={32}

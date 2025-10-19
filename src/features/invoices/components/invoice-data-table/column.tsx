@@ -7,6 +7,7 @@ import EditInvoiceSheet from "../edit-invoice-sheet";
 import { Button } from "@/components/ui/button";
 import { IconEye } from "@tabler/icons-react";
 import { Link } from "react-router";
+import { FormType } from "@/enums/form-type.enum";
 
 export const columns: ColumnDef<InvoiceDto>[] = [
   {
@@ -48,14 +49,14 @@ export const columns: ColumnDef<InvoiceDto>[] = [
       const invoice = row.original;
       return (
         <div className="flex justify-end gap-2 px-0">
-          <EditInvoiceSheet invoice={invoice} />
-          <DeleteInvoiceDialog invoiceId={invoice.id} />
           <Link to={`/invoices/${invoice.id}`}>
             <Button variant="outline" size="sm">
               <IconEye />
               View
             </Button>
           </Link>
+          <EditInvoiceSheet invoice={invoice} formType={FormType.UPDATE} />
+          <DeleteInvoiceDialog invoiceId={invoice.id} />
         </div>
       );
     },

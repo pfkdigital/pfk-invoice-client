@@ -27,7 +27,7 @@ export const AGING_ANALYSIS = `${GRAPH_ENDPOINT}/aging-analysis`;
 export const CASH_FLOW = `${GRAPH_ENDPOINT}/cash-flow`;
 export const PAYMENT_TRENDS = `${GRAPH_ENDPOINT}/payment-trends`;
 export const REVENUE_BY_CLIENT = (clientId: string) =>
-  `${GRAPH_ENDPOINT}client/${clientId}/revenue`;
+  `${GRAPH_ENDPOINT}/client/${clientId}/revenue`;
 export const STATUS_DISTRIBUTION_BY_CLIENT = (clientId: string) =>
   `${GRAPH_ENDPOINT}/clients/${clientId}/status-distribution`;
 export const DASHBOARD_DATA = `${GRAPH_ENDPOINT}/dashboard`;

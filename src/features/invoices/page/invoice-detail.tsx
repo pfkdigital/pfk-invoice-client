@@ -1,6 +1,6 @@
-import { useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import { getInvoiceById } from "@/lib/invoice-api-client";
+import { useParams, useNavigate } from "react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteInvoice, getInvoiceById } from "@/lib/invoice-api-client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -8,12 +8,16 @@ import { formatCurrency } from "@/lib/currency-formatter";
 import { format } from "date-fns";
 import BreadCrumb from "@/components/bread-crumb";
 import InvoiceStatusBadge from "../components/invoice-status-badge";
-import { IconEdit, IconDownload, IconPrinter } from "@tabler/icons-react";
+import { IconDownload, IconPrinter } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { InvoiceStatus } from "@/types/invoice.types";
+import EditInvoiceSheet from "../components/edit-invoice-sheet";
+import { FormType } from "@/enums/form-type.enum";
+import { toast } from "sonner";
 
-const InvoiceDetailPage = () => {
-  const {id} = useParams<{ id: string }>();
+function InvoiceDetailPage() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const {
     data: invoice,
@@ -24,6 +28,20 @@ const InvoiceDetailPage = () => {
     queryFn: () => getInvoiceById(id!),
     enabled: !!id,
   });
+
+  const queryClient = useQueryClient();
+
+  const handleDelete = async () => {
+    try {
+      await deleteInvoice(id!);
+      toast.success("Invoice deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["invoices"] });
+      navigate("/invoices");
+    } catch (error) {
+      console.error("Unable to delete invoice, please try again");
+      toast.error("Unable to delete invoice, please try again");
+    }
+  };
 
   if (isLoading) {
     return (
@@ -119,10 +137,7 @@ const InvoiceDetailPage = () => {
             <IconDownload className="size-4 mr-2" />
             Download
           </Button>
-          <Button size="sm">
-            <IconEdit className="size-4 mr-2" />
-            Edit Invoice
-          </Button>
+          <EditInvoiceSheet invoice={invoice} formType={FormType.UPDATE} />
         </div>
       </div>
 
@@ -273,17 +288,30 @@ const InvoiceDetailPage = () => {
               <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full" variant="outline" disabled={invoice.status === InvoiceStatus.PAID}>
+              <Button
+                className="w-full"
+                variant="outline"
+                disabled={invoice.status === InvoiceStatus.PAID}
+              >
                 Mark as Paid
               </Button>
-              <Button className="w-full" variant="outline" disabled={invoice.status === InvoiceStatus.PAID}>
+              <Button
+                className="w-full"
+                variant="outline"
+                disabled={invoice.status === InvoiceStatus.PAID}
+              >
                 Send Reminder
               </Button>
               <Button className="w-full" variant="outline" disabled>
                 Duplicate Invoice
               </Button>
               <Separator />
-              <Button className="w-full" variant="destructive" disabled={invoice.status === InvoiceStatus.PAID}>
+              <Button
+                className="w-full"
+                variant="destructive"
+                disabled={invoice.status === InvoiceStatus.PAID}
+                onClick={handleDelete}
+              >
                 Delete Invoice
               </Button>
             </CardContent>
@@ -292,6 +320,6 @@ const InvoiceDetailPage = () => {
       </div>
     </div>
   );
-};
+}
 
 export default InvoiceDetailPage;

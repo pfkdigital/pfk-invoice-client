@@ -1,6 +1,6 @@
 import { CLIENTS_ENDPOINT } from "@/constants/endpoints";
 import { UpdateClientDto } from "@/schemas/client.schema";
-import type { ClientDto, CreateClientDto } from "@/types/client.types";
+import type { ClientDto, ClientNamesDto, CreateClientDto } from "@/types/client.types";
 
 export const createClient = async (
   clientData: CreateClientDto
@@ -28,6 +28,17 @@ export const getClients = async (
   const response = await fetch(
     `${CLIENTS_ENDPOINT}?page=${page}&limit=${limit}&search=${search}&sort=${sort}`
   );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch clients");
+  }
+  return response.json();
+};
+
+export const getAllClientsNamed = async (): Promise<
+  Array<ClientNamesDto>
+> => {
+  const response = await fetch(`${CLIENTS_ENDPOINT}/names`);
 
   if (!response.ok) {
     throw new Error("Failed to fetch clients");
